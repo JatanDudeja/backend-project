@@ -4,16 +4,6 @@ import bcrypt from "bcrypt";
 
 const userSchema = new Schema(
     {
-        id: {
-            type: String,
-            required: true,
-        },
-        watchHistory: [
-            {
-                type: Schema.Types.ObjectId,
-                ref: "Video",
-            },
-        ],
         username: {
             type: String,
             required: true,
@@ -42,6 +32,12 @@ const userSchema = new Schema(
         coverImage: {
             type: String,
         },
+        watchHistory: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: "Video",
+            },
+        ],
         password: {
             type: String,
             required: [true, "Password is required."],
