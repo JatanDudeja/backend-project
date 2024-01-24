@@ -217,12 +217,12 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
 });
 
 const changeCurrentPassword = asyncHandler(async (req, res) => {
-  const {oldPassword, newPassword} = req.body
+  const { oldPassword, newPassword } = req.body
 
   const user = await User.findById(req.user?._id)
 
-  const isPasswordRight = await user.isPasswordCorrect(oldPassword)
-  if(!isPasswordRight){
+  const isPasswordCorrect = await user.isPasswordCorrect(oldPassword)
+  if(!isPasswordCorrect){
     throw new APIErrors(400, "Invalid old password.")
   }
 
@@ -234,14 +234,13 @@ const changeCurrentPassword = asyncHandler(async (req, res) => {
   .status(200)
   .json(new APIResponse(200, {}, "Password Changed!"))
 
-
 })
 
 
 const getCurrectUser = asyncHandler(async (req, res) => {
   return res
   .status(200)
-  .json(200, req.user, "Current user fetched successfully.")
+  .json(new APIResponse(200, req.user, "Current user fetched successfully."))
 })
 
 const updateAccount = asyncHandler(async (req, res) =>{
@@ -282,7 +281,7 @@ const updateUserAvatar = asyncHandler(async (req, res) => {
     throw new APIErrors(400, "Error while uploading the avatar.")
   }
 
-  const user = await findByIdAndUpdate(
+  const user = await User.findByIdAndUpdate(
     req.user?._id,
     {
       $set: {
@@ -313,7 +312,7 @@ const updateUserCoverImage = asyncHandler(async (req, res) => {
     throw new APIErrors(400, "Error while uploading the avatar.")
   }
 
-  const user = await findByIdAndUpdate(
+  const user = await User.findByIdAndUpdate(
     req.user?._id,
     {
       $set: {
